@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Despertador</title>
+</head>
+<body>
+    <h1>Despertador</h1>
+    <input type="time" id="alarmTime">
+    <button id="setAlarmButton">Definir Alarme</button>
+    <audio id="alarmSound" src="alarm.mp3" preload="auto"></audio>
+    
+    <script>
+        //comentário de linha
+        /**
+         * comentário
+         * de varias 
+         * linhas
+         */
+        // o objeto setAlarmButton será observado pelo evento click e emitirá uma função
+        document.getElementById('setAlarmButton').addEventListener('click', () => {
+            //tem o elemento de entrada de alarme com ID 'alarmTime'
+            const alarmTimeInput = document.getElementById('alarmTime');
+            //tem o valor inserido no campo de entrada
+            const alarmTime = alarmTimeInput.value;
+
+            //verifica se não tem um horário de entrada selecionado
+            if (!alarmTime) {
+                //mostra um alerta indicando que um horário de alarme deve ser selecionado
+                alert("Selecione um horário de alarme.");
+                return; //sai da função
+            }
+            //divide o valor do horário em horas e minutos
+            const [hours, minutes] = alarmTime.split(':');
+            //tem a data e hora atuais
+            const now = new Date();
+            //cria um objeto de data e hora para o horário do alarme no mesmo dia
+            const alarmDateTime = new Date(now.getFullYear(), now.getMonth(), now.getDate(), hours, minutes);
+
+            //tem a data e a hora atual de novo
+            const currentTime = new Date();
+            //calcula o resto do tempo até o horário do alarme em milissegundos
+            const timeUntilAlarm = alarmDateTime - currentTime;
+            //verifica se o resto do tempo é menor ou igual a zero
+            if (timeUntilAlarm <= 0) {
+                //mostra um alerta indicando que o horário do alarme deve ser no futuro
+                alert("O horário de alarme deve ser no futuro.");
+                return;//sai da função
+            }
+            //define um timeout para disparar quando o tempo até o alarme acabar
+            setTimeout(() => {
+                //mostra um alerta indicando que o alarme foi disparado
+                alert("Alarme disparado!");
+                //chama a função para reproduzir o som do alarme
+                playAlarmSound();
+            }, timeUntilAlarm);
+        });
+        // Função para reproduzir o som do alarme
+        function playAlarmSound() {
+            //tem o elemento de áudio com o ID 'alarmSound'
+            const alarmSound = document.getElementById('alarmSound');
+            //reproduz o som do alarme
+            alarmSound.play();
+        }
+    </script>
+</body>
+</html>
